@@ -15,6 +15,13 @@ spec:
       containers:
         - name: auth
           image: practice/auth
+          env:
+            # to get env from secret pod
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
 ---
 apiVersion: v1
 kind: Service
@@ -27,4 +34,4 @@ spec:
     - name: auth
       protocol: TCP
       port: 3000
-      targetPort: 3000          
+      targetPort: 3000

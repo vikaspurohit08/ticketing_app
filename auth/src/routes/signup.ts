@@ -44,14 +44,14 @@ router.post(
         id: user.id,
         email: user.email,
       },
-      "asdf"
+      process.env.JWT_KEY!
+      // ! tells typescript that we have already defined and checked if this key exists
     );
     //store JWT in session object
     req.session = {
       jwt: userJwt,
     };
 
-    console.log("jwt is ", userJwt);
     res.status(201).send(user);
   }
 );
