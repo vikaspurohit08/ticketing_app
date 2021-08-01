@@ -1,0 +1,3 @@
+pages directory acts as routes.
+the file index.js acts as root route.
+While other files for eg. banana.js will be a route
