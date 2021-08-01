@@ -4,8 +4,10 @@ import { app } from "../app";
 
 let mongo: any;
 beforeAll(async () => {
-  mongo = new MongoMemoryServer();
+  process.env.JWT_KEY = "asdfghh"; //temporary solution
+  mongo = await MongoMemoryServer.create();
   const mongoUri = await mongo.getUri();
+
   await mongoose.connect(mongoUri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
