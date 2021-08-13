@@ -1,9 +1,7 @@
-import axios from 'axios';
+import buildClient from "../api/build-client";
 
 const landing = ({ currentUser }) => {
-    console.log(`currentUser`, currentUser);
-    // axios.get('/api/users/currentuser'); //called from client
-    return <h1>Landing Page</h1>
+    return currentUser ? <h1>You are signed in</h1> : <h1>You are not signed in</h1>
 }
 
 
@@ -28,23 +26,10 @@ const landing = ({ currentUser }) => {
 //3. typing URL into address box
 //4. when we navigate to other route of app
 
-landing.getInitialProps = async ({ req }) => {
-    if (typeof window === 'undefined') {
-        //we are on server
-        //request will be made with ingress baseUrl
-        const { data } = await axios.get(
-            'http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/users/currentuser',
-            {
-                headers: req.headers
-            }
-        );
-        return data;
-    } else {
-        //we are on client
-        //request will be made with empty string baseUrl
-        const { data } = await axios.get('/api/users/currentuser');
-        return data;
-    }
+landing.getInitialProps = async (context) => {
+    const client = buildClient(context);
+    const { data } = await client.get('api/users/currentuser')
+    return data;
 }
 
 
