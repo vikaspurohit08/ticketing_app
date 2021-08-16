@@ -1,15 +1,22 @@
 import nats, { Message } from "node-nats-streaming";
+import { randomBytes } from "crypto";
 
 console.clear();
-
-const stan = nats.connect("ticketing", "123", {
+//if we want to create multiple instance of listener
+//we need to have different clientId for each of them
+//we will generate random clientId here. Although in k8s world we will use other way
+const stan = nats.connect("ticketing", randomBytes(4).toString("hex"), {
   url: "http://localhost:4222",
 });
 
 stan.on("connect", () => {
   console.log("Listener connected to NATS");
 
-  const subscription = stan.subscribe("ticket:created");
+  const subscription = stan.subscribe("ticket:created", "listenerQueueGroup");
+  //let's consider 2 instance of a listener. If an event is published we don't want
+  //both the same service listener to listen it(for eg. order-service).
+  //hence we provide a queue group
+  //which will give events to any one instance per service randomly
 
   subscription.on("message", (msg: Message) => {
     const data = msg.getData();
