@@ -18,8 +18,14 @@ stan.on("connect", () => {
     process.exit();
   });
 
-  const options = stan.subscriptionOptions().setManualAckMode(true);
-  //.setDeliverAllAvailable();
+  const options = stan
+    .subscriptionOptions()
+    .setManualAckMode(true)
+    .setDeliverAllAvailable() //deliver all events delievered in past when listener starts
+    //but in this way we are giving all past event
+    //to solve it we can setDurableName which will
+    //only those events which service missed last time
+    .setDurableName("accounting-service");
   //we can chain all options we want
 
   const subscription = stan.subscribe(
