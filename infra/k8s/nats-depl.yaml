@@ -20,11 +20,11 @@ spec:
           '4222',
           '-m',
           '8222',
-          '-hbi',
+          '-hbi', # heartbeat interval to health check if client is running
           '5s',
-          '-hbt',
+          '-hbt', # how long each client has to respond
           '5s',
-          '-hbf',
+          '-hbf', # number of times a client can fail until nats streaming server decides that client is dead
           '2',
           '-SD',
           '-cid',

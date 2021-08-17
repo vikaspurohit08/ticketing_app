@@ -12,6 +12,12 @@ const stan = nats.connect("ticketing", randomBytes(4).toString("hex"), {
 stan.on("connect", () => {
   console.log("Listener connected to NATS");
 
+  stan.on("close", () => {
+    //when the client is closed
+    console.log("NATS connection closed");
+    process.exit();
+  });
+
   const options = stan.subscriptionOptions().setManualAckMode(true);
   //.setDeliverAllAvailable();
   //we can chain all options we want
@@ -44,3 +50,10 @@ stan.on("connect", () => {
     //this process wil go on until the event is acknowledged in code with msg.ack()
   });
 });
+
+//for some reason if a listener is dead. Then the event should not get published to the listener
+//for prohibiting this we use heartbeat system but until heartbeat interval arrivals and all retries are done
+//the system behaves as if the old listener is still there. (For restart it will give two different listener of same)
+//Hence to overcome that we are making sure that on restart and terminate the listener should get dead
+process.on("SIGINT", () => stan.close()); //at restart
+process.on("SIGTERM", () => stan.close()); //at termination
