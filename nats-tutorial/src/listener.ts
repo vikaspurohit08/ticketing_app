@@ -18,43 +18,7 @@ stan.on("connect", () => {
     process.exit();
   });
 
-  const options = stan
-    .subscriptionOptions()
-    .setManualAckMode(true)
-    .setDeliverAllAvailable() //deliver all events delievered in past when listener starts
-    //but in this way we are giving all past event
-    //to solve it we can setDurableName which will
-    //only those events which service missed last time
-    .setDurableName("accounting-service");
-  //we can chain all options we want
-
-  const subscription = stan.subscribe(
-    "ticket:created",
-    "listenerQueueGroup",
-    options
-  );
-  //let's consider 2 instance of a listener. If an event is published we don't want
-  //both the same service listener to listen it(for eg. order-service).
-  //hence we provide a queue group
-  //which will give events to any one instance per service randomly
-
-  subscription.on("message", (msg: Message) => {
-    const data = msg.getData();
-
-    if (typeof data === "string") {
-      console.log(`Received event ${msg.getSequence()}, with data: ${data}`);
-    }
-
-    msg.ack();
-    //let's consider 2 instance of a listener.
-    //if for any case our subscription.on has failed(like db not available)
-    //then in auto ack mode we will lose the event without proper processing
-    //so we can set subscription option .setManualAckMode(true) which will work like
-    //we have to manually acknowledge the event in code
-    //for eg if 1st instance receives event but fails to process then after few seconds wait
-    //it will send event to other instance if that also fails then again to other instance
-    //this process wil go on until the event is acknowledged in code with msg.ack()
-  });
+  new TicketCreatedListener(stan).listen();
 });
 
 //for some reason if a listener is dead. Then the event should not get published to the listener
@@ -76,12 +40,18 @@ abstract class Listener {
   }
 
   subscriptionOptions() {
-    return this.client
-      .subscriptionOptions()
-      .setDeliverAllAvailable()
-      .setManualAckMode(true)
-      .setAckWait(this.ackWait)
-      .setDurableName(this.queueGroupName);
+    return (
+      this.client
+        .subscriptionOptions()
+        .setDeliverAllAvailable() //deliver all events delievered in past when listener starts
+        //but in this way we are giving all past event
+        //to solve it we can setDurableName which will
+        //only those events which service missed last time
+        .setManualAckMode(true)
+        .setAckWait(this.ackWait)
+        .setDurableName(this.queueGroupName)
+      //we can chain all options we want
+    );
   }
 
   listen() {
@@ -90,6 +60,10 @@ abstract class Listener {
       this.queueGroupName,
       this.subscriptionOptions()
     );
+    //let's consider 2 instance of a listener. If an event is published we don't want
+    //both the same service listener to listen it(for eg. order-service).
+    //hence we provide a queue group
+    //which will give events to any one instance per service randomly
 
     subscription.on("message", (msg: Message) => {
       console.log(`Message received: ${this.subject} / ${this.queueGroupName}`);
@@ -104,5 +78,24 @@ abstract class Listener {
     return typeof data === "string"
       ? JSON.parse(data)
       : JSON.parse(data.toString("utf8"));
+  }
+}
+
+class TicketCreatedListener extends Listener {
+  subject = "ticket:created";
+  queueGroupName = "payments-service";
+
+  onMessage(data: any, msg: nats.Message): void {
+    console.log("Event Data", data);
+
+    msg.ack();
+    //let's consider 2 instance of a listener.
+    //if for any case our subscription.on has failed(like db not available)
+    //then in auto ack mode we will lose the event without proper processing
+    //so we can set subscription option .setManualAckMode(true) which will work like
+    //we have to manually acknowledge the event in code
+    //for eg if 1st instance receives event but fails to process then after few seconds wait
+    //it will send event to other instance if that also fails then again to other instance
+    //this process wil go on until the event is acknowledged in code with msg.ack()
   }
 }
