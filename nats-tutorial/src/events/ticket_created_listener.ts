@@ -10,7 +10,7 @@ export class TicketCreatedListener extends Listener<TicketCreatedEvent> {
   onMessage(data: TicketCreatedEvent["data"], msg: nats.Message): void {
     console.log("Event Data", data);
 
-    //data.test // will give error now
+    //data.test // will give error now since type of data is defined
 
     msg.ack();
     //let's consider 2 instance of a listener.
