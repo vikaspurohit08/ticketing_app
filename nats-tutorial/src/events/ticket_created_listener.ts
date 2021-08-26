@@ -7,8 +7,10 @@ export class TicketCreatedListener extends Listener<TicketCreatedEvent> {
   readonly subject: Subjects.TicketCreated = Subjects.TicketCreated;
   queueGroupName = "payments-service";
 
-  onMessage(data: any, msg: nats.Message): void {
+  onMessage(data: TicketCreatedEvent["data"], msg: nats.Message): void {
     console.log("Event Data", data);
+
+    //data.test // will give error now
 
     msg.ack();
     //let's consider 2 instance of a listener.
