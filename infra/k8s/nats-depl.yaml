@@ -27,7 +27,7 @@ spec:
           '-hbf', # number of times a client can fail until nats streaming server decides that client is dead
           '2',
           '-SD',
-          '-cid',
+          '-cid', # clusterId
           'ticketing'
           ] # used for commandline arguments we can set
 ---
