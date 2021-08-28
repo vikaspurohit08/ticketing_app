@@ -16,8 +16,16 @@ spec:
         - name: tickets
           image: practice/tickets
           env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name # will give unique name since for every client pod will be unique
             - name: MONGO_URI
               value: "mongodb://tickets-mongo-srv:27017/tickets_db"
+            - name: NATS_URI
+              value: "http://nats-srv:4222"
+            - name: NATS_CLUSTER_ID
+              value: ticketing
             # to get env from secret pod
             - name: JWT_KEY
               valueFrom:
