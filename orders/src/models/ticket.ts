@@ -1,4 +1,6 @@
+import { OrderStatus } from "@vpticketsapp/common";
 import mongoose from "mongoose";
+import { Order } from "./order";
 
 interface TicketAttrs {
   title: string;
@@ -8,6 +10,7 @@ interface TicketAttrs {
 export interface TicketDoc extends mongoose.Document {
   title: string;
   price: number;
+  isReserved(): Promise<boolean>;
 }
 
 interface TicketModel extends mongoose.Model<TicketDoc> {
@@ -38,6 +41,26 @@ const ticketSchema = new mongoose.Schema(
 
 ticketSchema.statics.build = (attrs: TicketAttrs) => {
   return new Ticket(attrs);
+};
+
+ticketSchema.methods.isReserved = async function () {
+  //this === ticket doc that we just called on isReserved
+  //run query to look at all orders.
+  //find order where ticket is the ticket found and
+  //order status not cancelled
+  //if we find so then that means ticket is reserved
+  const existingOrder = await Order.findOne({
+    ticket: this as any, //to fix Type 'Document<any, any>' is missing the following properties from type 'LeanDocument<TicketDoc>': title, price, isReserved issue
+    status: {
+      $in: [
+        OrderStatus.Created,
+        OrderStatus.AwaitingPayment,
+        OrderStatus.Complete,
+      ],
+    },
+  });
+
+  return !!existingOrder;
 };
 
 const Ticket = mongoose.model<TicketDoc, TicketModel>("Ticket", ticketSchema);
