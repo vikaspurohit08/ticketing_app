@@ -5,6 +5,8 @@ import {
 } from "@vpticketsapp/common";
 import express, { Request, Response } from "express";
 import { Order } from "../models/order";
+import { OrderCancelledPublisher } from "../events/publishers/order_cancelled_publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -21,7 +23,12 @@ router.delete("/api/orders/:orderId", async (req: Request, res: Response) => {
   await order.save();
 
   //publish event that order was cancelled
-
+  new OrderCancelledPublisher(natsWrapper.client).publish({
+    id: order.id,
+    ticket: {
+      id: order.ticket.id,
+    },
+  });
   res.status(204).send(order);
 });
 
