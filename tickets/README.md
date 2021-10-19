@@ -13,3 +13,7 @@ First updation done with version 2. Second updation done with version 3. Then fo
 To have this versioning we can use `mongoose-update-if-current` npm package.
 Which by default used (`___v`) of mongodb document for versioning. But we can set favourable name by using
 documentSchema.set("versionKey", "our_versioning_name");
+
+# When version will be incremented/included in event?
+
+Increment/including of version number will be only when primary service responsible for a record emits an event to describe create/update/destroy to a record.
