@@ -13,8 +13,10 @@ export class TicketUpdatedListener extends Listener<TicketUpdatedEvent> {
       throw new Error("Ticket not found");
     }
 
-    const { title, price } = data;
-    ticket.set({ title, price });
+    const { title, price, version } = data; //If we don't want to couple the versioning with `mongoose-update-if-current` module
+    //then we can extract version from here and set it directly. Bcz we cannot be sure if upcoming version is in number format or time format or etc.
+    //but for that we need to add multiple criterias to find the ticket refer ticket.ts change
+    ticket.set({ title, price, version });
     await ticket.save();
 
     msg.ack();
