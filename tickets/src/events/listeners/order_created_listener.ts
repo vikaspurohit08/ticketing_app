@@ -2,6 +2,7 @@ import { Listener, OrderCreatedEvent, Subjects } from "@vpticketsapp/common";
 import { Message } from "node-nats-streaming";
 import { Ticket } from "../../models/ticket";
 import { queueGroupName } from "./queue_group_name";
+import { TicketUpdatedPublisher } from "../publishers/ticket_updated_publisher";
 
 export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
   subject: Subjects.OrderCreated = Subjects.OrderCreated;
@@ -18,7 +19,24 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
     ticket.set({ orderId: data.id });
     //4. Save the ticket
     await ticket.save();
-    //5. Ack the msg
+
+    //since we are updating the ticket here (no matter about orderId)
+    //we must publish event to update ticket in order db as well
+    //if we don't then the next update will not be able to update
+    //due to version mismatch
+    //5. publish an event
+    //new TicketUpdatedPublisher(natsWrapper.client); //not a good way since it adds dependency between files
+    //our listener already has nats client but it is private
+    //hence we will make it protected
+    await new TicketUpdatedPublisher(this.client).publish({
+      id: ticket.id,
+      price: ticket.price,
+      title: ticket.title,
+      userId: ticket.userId,
+      orderId: ticket.orderId,
+      version: ticket.version,
+    });
+    //6. Ack the msg
     msg.ack();
   }
 }
