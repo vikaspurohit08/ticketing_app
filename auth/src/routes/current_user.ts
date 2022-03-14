@@ -1,5 +1,5 @@
 import express from "express";
-import { currentUser } from "@vpticketsapp/common";
+import { currentUser } from "@vpticketing/common";
 
 const router = express.Router();
 
