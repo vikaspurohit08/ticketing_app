@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { requireAuth, validateRequest } from "@vpticketsapp/common";
+import { requireAuth, validateRequest } from "@vpticketing/common";
 import { body } from "express-validator";
 import { Ticket } from "../models/ticket";
 import { TicketCreatedPublisher } from "../events/publishers/ticket_created_publisher";

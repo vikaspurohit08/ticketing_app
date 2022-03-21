@@ -1,4 +1,4 @@
-import { NotFoundError } from "@vpticketsapp/common";
+import { NotFoundError } from "@vpticketing/common";
 import express, { Request, Response } from "express";
 import { Ticket } from "../models/ticket";
 

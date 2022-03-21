@@ -6,7 +6,7 @@ import {
   requireAuth,
   NotAuthorizedError,
   BadRequestError,
-} from "@vpticketsapp/common";
+} from "@vpticketing/common";
 import { Ticket } from "../models/ticket";
 import { TicketUpdatedPublisher } from "../events/publishers/ticket_updated_publisher";
 import { natsWrapper } from "../nats-wrapper";

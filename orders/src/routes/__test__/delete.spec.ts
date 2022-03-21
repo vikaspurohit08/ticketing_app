@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import { Ticket } from "../../models/ticket";
 import { app } from "../../app";
 import { Order } from "../../models/order";
-import { OrderStatus } from "@vpticketsapp/common";
+import { OrderStatus } from "@vpticketing/common";
 import { natsWrapper } from "../../nats-wrapper";
 
 it("marks an order as cancelled", async () => {

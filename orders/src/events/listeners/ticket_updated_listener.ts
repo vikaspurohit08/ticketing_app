@@ -1,4 +1,4 @@
-import { Listener, Subjects, TicketUpdatedEvent } from "@vpticketsapp/common";
+import { Listener, Subjects, TicketUpdatedEvent } from "@vpticketing/common";
 import { Message } from "node-nats-streaming";
 import { Ticket } from "../../models/ticket";
 import { queueGroupName } from "./queue_group_name";

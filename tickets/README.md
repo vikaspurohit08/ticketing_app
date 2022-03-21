@@ -1,3 +1,8 @@
+# Secret Pod
+
+Command to create secret pod with literal
+kubectl create secret generic jwt-secret --from-literal=jwt=asdf
+
 # Concurrency Issue
 
 Let's assume the system is up and running and request is made for creating ticket. Followed by updating the ticket twice. In ideal scenario it will work flawless. But let's say we receive 1000 requests at once in same way. In tickers db the data will be created and updated correctly but in other db where we are sending event(for eg. orders) there is possibility that update gets called before creation of ticket, or second update getting called before first update. This is concurrency issue.

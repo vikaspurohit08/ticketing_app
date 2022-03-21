@@ -3,10 +3,10 @@ kind: Config
 deploy:
   kubectl:
     manifests:
-      - ./infra/k8s/*
+      - ./infra/k8s/* # where to check for image build yaml
 build:
   local:
-    push: false
+    push: false # don't push image
   artifacts:
     - image: practice/auth
       context: auth

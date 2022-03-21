@@ -1,4 +1,4 @@
-import { OrderStatus } from "@vpticketsapp/common";
+import { OrderStatus } from "@vpticketing/common";
 import mongoose from "mongoose";
 import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { Order } from "./order";

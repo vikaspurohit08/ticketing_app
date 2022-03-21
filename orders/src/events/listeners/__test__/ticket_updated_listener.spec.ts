@@ -2,7 +2,7 @@ import { TicketUpdatedListener } from "../ticket_updated_listener";
 import { natsWrapper } from "../../../nats-wrapper";
 import mongoose from "mongoose";
 import { Ticket } from "../../../models/ticket";
-import { TicketUpdatedEvent } from "@vpticketsapp/common";
+import { TicketUpdatedEvent } from "@vpticketing/common";
 import { Message } from "node-nats-streaming";
 
 const setup = async () => {

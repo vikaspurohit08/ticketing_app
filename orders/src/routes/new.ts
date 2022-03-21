@@ -6,7 +6,7 @@ import {
   OrderStatus,
   requireAuth,
   validateRequest,
-} from "@vpticketsapp/common";
+} from "@vpticketing/common";
 import { body } from "express-validator";
 import { Ticket } from "../models/ticket";
 import { Order } from "../models/order";

@@ -2,7 +2,7 @@ import {
   NotAuthorizedError,
   NotFoundError,
   OrderStatus,
-} from "@vpticketsapp/common";
+} from "@vpticketing/common";
 import express, { Request, Response } from "express";
 import { Order } from "../models/order";
 import { OrderCancelledPublisher } from "../events/publishers/order_cancelled_publisher";

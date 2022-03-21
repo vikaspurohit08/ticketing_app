@@ -1,7 +1,7 @@
 import { Ticket } from "../../../models/ticket";
 import { natsWrapper } from "../../../nats-wrapper";
 import { OrderCreatedListener } from "../order_created_listener";
-import { OrderCreatedEvent, OrderStatus } from "@vpticketsapp/common";
+import { OrderCreatedEvent, OrderStatus } from "@vpticketing/common";
 import mongoose from "mongoose";
 import { Message } from "node-nats-streaming";
 

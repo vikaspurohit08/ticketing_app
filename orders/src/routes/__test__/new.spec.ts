@@ -3,7 +3,7 @@ import { app } from "../../app";
 import mongoose from "mongoose";
 import { Order } from "../../models/order";
 import { Ticket } from "../../models/ticket";
-import { OrderStatus } from "@vpticketsapp/common";
+import { OrderStatus } from "@vpticketing/common";
 import { natsWrapper } from "../../nats-wrapper";
 
 it("returns an error if ticket does not exist", async () => {

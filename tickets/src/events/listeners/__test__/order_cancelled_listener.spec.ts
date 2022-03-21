@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { OrderCancelledEvent } from "@vpticketsapp/common";
+import { OrderCancelledEvent } from "@vpticketing/common";
 import { Ticket } from "../../../models/ticket";
 import { natsWrapper } from "../../../nats-wrapper";
 import { OrderCanncelledListener } from "../order_cancelled_listener";

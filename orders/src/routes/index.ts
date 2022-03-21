@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { requireAuth } from "@vpticketsapp/common";
+import { requireAuth } from "@vpticketing/common";
 import { Order } from "../models/order";
 
 const router = express.Router();

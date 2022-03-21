@@ -1,4 +1,4 @@
-import { Listener, OrderCancelledEvent, Subjects } from "@vpticketsapp/common";
+import { Listener, OrderCancelledEvent, Subjects } from "@vpticketing/common";
 import { Message } from "node-nats-streaming";
 import { Ticket } from "../../models/ticket";
 import { TicketUpdatedPublisher } from "../publishers/ticket_updated_publisher";

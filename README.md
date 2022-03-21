@@ -22,3 +22,7 @@ Refer command line options in https://hub.docker.com/_/nats-streaming
 # Deployment
 
 Docker and Kubernetes
+
+# NGINX-Ingress
+
+Use command in https://kubernetes.github.io/ingress-nginx/deploy/ to install nginx-ingress

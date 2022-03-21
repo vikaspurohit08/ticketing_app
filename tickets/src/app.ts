@@ -4,7 +4,7 @@ import "express-async-errors"; // used since check app.all method.
 //the response is received hence this import will solve the problem
 import { json } from "body-parser";
 import cookieSession from "cookie-session";
-import { errorHandler, NotFoundError, currentUser } from "@vpticketsapp/common";
+import { errorHandler, NotFoundError, currentUser } from "@vpticketing/common";
 import { createTicketRouter } from "./routes/new";
 import { showTicketRouter } from "./routes/show";
 import { indexTicketRouter } from "./routes";

@@ -8,7 +8,7 @@ import { currentUserRouter } from "./routes/current_user";
 import { signinRouter } from "./routes/signin";
 import { signoutRouter } from "./routes/signout";
 import { signupRouter } from "./routes/signup";
-import { errorHandler, NotFoundError } from "@vpticketsapp/common";
+import { errorHandler, NotFoundError } from "@vpticketing/common";
 
 const app = express();
 app.set("trust proxy", true);

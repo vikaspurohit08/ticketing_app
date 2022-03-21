@@ -2,7 +2,7 @@ import {
   NotAuthorizedError,
   NotFoundError,
   requireAuth,
-} from "@vpticketsapp/common";
+} from "@vpticketing/common";
 import express, { Request, Response } from "express";
 import { Order } from "../models/order";
 

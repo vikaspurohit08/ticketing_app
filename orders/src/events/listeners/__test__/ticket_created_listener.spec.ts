@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { Message } from "node-nats-streaming";
-import { TicketCreatedEvent } from "@vpticketsapp/common";
+import { TicketCreatedEvent } from "@vpticketing/common";
 import { TicketCreatedListener } from "../ticket_created_listener";
 import { natsWrapper } from "../../../nats-wrapper";
 import { Ticket } from "../../../models/ticket";
