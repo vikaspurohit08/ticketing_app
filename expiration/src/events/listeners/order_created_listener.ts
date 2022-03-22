@@ -12,9 +12,17 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
   subject: Subjects.OrderCreated = Subjects.OrderCreated;
   queueGroupName: string = queueGroupName;
   async onMessage(data: OrderCreatedEvent["data"], msg: Message) {
-    await expirationQueue.add({
-      orderId: data.id,
-    });
+    const delay = new Date(data.expiresAt).getTime() - new Date().getTime();
+    console.log("Waiting this ms to process", delay);
+
+    await expirationQueue.add(
+      {
+        orderId: data.id,
+      },
+      {
+        delay: delay, //delay to expire the order
+      }
+    );
     msg.ack();
   }
 }
